@@ -10,7 +10,7 @@ function cipher(password) {
         min: 1,
         max: 6 * 1024
       });
-  var mid = new ciphers.Cipher('aes-128-ctr', password);
+  var mid = new ciphers.Cipher('aes-256-ctr', password);
   var tail = new sbs(2 * 1024);
   
   var out =  duplexer(start, tail);
@@ -29,7 +29,7 @@ exports.decipher = decipher;
 function decipher(password) {
   
   var start = new hmac.Verify(password);
-  var end = ciphers.Decipher('aes-128-ctr', password);
+  var end = ciphers.Decipher('aes-256-ctr', password);
   var out = duplexer(start, end);
   function onErr(e) {
     out.emit('error', e);

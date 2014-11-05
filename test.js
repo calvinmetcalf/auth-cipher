@@ -33,7 +33,7 @@ test('works', function (t) {
 });
 test('works 2', function (t) {
   t.plan(1);
-  var hash = 'aebb837788d7bd13ff2dc89056a7d5080f2ee8934877482e0122772a49e7abf0bb80f7708df7fc2a850d029431e9e3c12f4c224f1b1af659e0d14a76f432002b';
+  var hash = 'b05d1443704333579dc462fe75475a66b0bc58ac1a30528a88fd19d99c6b9bea4d7f50823cbd7c89256f779e0c8de1d72f2916e9a929b4707eba6db40a9b4684';
   var pass = new Buffer('pass');
   var decipher = AuthEnc.decipher(pass);
   var h1 = crypto.createHash('sha512');
