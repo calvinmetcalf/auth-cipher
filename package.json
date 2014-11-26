@@ -23,7 +23,8 @@
     "duplexify": "^3.2.0"
   },
   "devDependencies": {
+    "tap-spec": "^1.0.1",
     "tape": "^3.0.2",
-    "tap-spec": "^1.0.1"
+    "through2": "^0.6.3"
   }
 }
