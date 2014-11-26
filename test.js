@@ -31,20 +31,44 @@ test('works', function (t) {
     next();
   }));
 });
-test('works 2', function (t) {
-  t.plan(1);
-  var hash = 'b05d1443704333579dc462fe75475a66b0bc58ac1a30528a88fd19d99c6b9bea4d7f50823cbd7c89256f779e0c8de1d72f2916e9a929b4707eba6db40a9b4684';
-  var pass = new Buffer('pass');
-  var decipher = AuthEnc.decipher(pass);
-  var h1 = crypto.createHash('sha512');
-  fs.createReadStream('./fixture').pipe(decipher).pipe(through(function (chunk, _, next) {
-    h1.update(chunk);
-    next();
-  }, function (next) {
-    var d1 = h1.digest('hex');
-    t.equals(d1, hash);
-    next();
-  }));
+test('to file', function (t) {
+  t.test('set up', function (t) {
+    fs.unlink('./fixture', function () {
+      t.end();
+    });
+  });
+  t.test('works 2', function (t) {
+    t.plan(1);
+    var pass = new Buffer('password');
+    var cipher = AuthEnc.cipher(pass);
+    var decipher = AuthEnc.decipher(pass);
+    var h1 = crypto.createHash('sha512');
+    var h2 = crypto.createHash('sha512');
+    var d1, d2;
+    var rand = new Random(1024 * 1024 * 40);
+    rand.pipe(through(function (chunk, _, next) {
+      h1.update(chunk);
+      next();
+    }, function (next) {
+      d1 = h1.digest('hex');
+      next();
+    }));
+    rand.pipe(cipher).pipe(fs.createWriteStream('./fixture')).on('finish', function () {
+      fs.createReadStream('./fixture').pipe(decipher).pipe(through(function (chunk, _, next) {
+        h2.update(chunk);
+        next();
+      }, function (next) {
+        var d2 = h2.digest('hex');
+        t.equals(d1, d2);
+        next();
+      }));
+    });
+  });
+  t.test('clean up', function (t) {
+    fs.unlink('./fixture', function () {
+      t.end();
+    });
+  });
 });
 function hash(input) {
     return crypto.createHash('sha512').update(input).digest();

@@ -1,4 +1,4 @@
-auth-cipher
+auth-cipher [![Build Status](https://travis-ci.org/calvinmetcalf/auth-cipher.svg)](https://travis-ci.org/calvinmetcalf/auth-cipher)
 ====
 
 A streaming authenticated cipher with sensible defaults.
